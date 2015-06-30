@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Customer;
 import customTools.DBUtil;
@@ -40,6 +41,11 @@ public class Index extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		 
+		 
+		 
 		EntityManager em = customTools.DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT c from Customer c";
        TypedQuery<Customer> q = em.createQuery(qString, Customer.class);
@@ -52,9 +58,10 @@ public class Index extends HttpServlet {
        } finally {
            em.close();
        }
-
-       request.setAttribute("customerList", custs);
-       getServletContext().getRequestDispatcher("index.jsp").forward(request, response);
+       
+       session.setAttribute("customerList", custs);
+     //  request.setAttribute("customerList", custs);
+       getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
        
 	}
 
